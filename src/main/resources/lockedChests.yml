@@ -1,0 +1,7 @@
+##################################################################################
+# Hier werden alle Kisten nach Koordinaten reingeschrieben.
+# Dazu steht der jeweilige Kistenowner und das Team, welcher er hinzufügt hat.
+# wenn man eine Kiste finden will einfach die Suchfunktion nutzen
+# die Spieler werden mit ihrer UUID gespeichert. Man kann NameMC oder anderes nutzen, um ihre Namen herauszufinden
+##################################################################################
+# plugin coded by zBlubba

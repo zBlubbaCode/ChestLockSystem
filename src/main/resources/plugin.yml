@@ -1,0 +1,15 @@
+name: Chestlocksystem
+version: '${project.version}'
+main: de.zblubba.chestlocksystem.Chestlocksystem
+api-version: 1.19
+authors: [ zBlubba ]
+description: Plugin for Terribian survival Server, players can lock their chests
+website: https://zblubba.de
+
+commands:
+  lock:
+    description: locks a chest, add or remove a player from the team
+  unlock:
+    description: unlocks a chest
+  reloadchestlocksystem:
+    description: reloads this plugin
