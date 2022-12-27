@@ -1,6 +1,7 @@
 package de.zblubba.chestlocksystem.commands;
 
 import de.zblubba.chestlocksystem.Chestlocksystem;
+import de.zblubba.chestlocksystem.util.MessageCollection;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.*;
@@ -51,12 +52,11 @@ public class UnlockCommand implements CommandExecutor {
                                     locksConfig.set(leftPath + ".locked", false);
                                     locksConfig.set(rightPath + ".locked", false);
 
-                                    p.sendMessage(Chestlocksystem.getPrefix + "§7Diese §aDoppelchest §7wurde §aerfolgreich §7entlocked!");
-                                } else {
-                                    p.sendMessage("Du nicht owner sein");
-                                }
+                                    p.sendMessage(MessageCollection.getUnlockSuccess(p.getName(), block.getType().toString()));
+                                } else p.sendMessage(MessageCollection.getNotOwner(p.getName(), block.getType().toString()));
                             } else {
-                                p.sendMessage("beide owner nicht gleich lol");
+                                locksConfig.set(path + ".locked", false);
+                                p.sendMessage(MessageCollection.getUnlockSuccess(p.getName(), block.getType().toString()));
                             }
                         } else {
                             String ownerUUID = locksConfig.getString(path + ".owner");
@@ -64,10 +64,10 @@ public class UnlockCommand implements CommandExecutor {
                             if(ownerUUID.equals(p.getUniqueId().toString())) {
 
                                 locksConfig.set(path + ".locked", false);
-                                p.sendMessage(Chestlocksystem.getPrefix + "§7Diese " + block.getType() + " wurde §aerfolgreich §7entlocked!");
+                                p.sendMessage(MessageCollection.getUnlockSuccess(p.getName(), block.getType().toString()));
 
                             } else {
-                                p.sendMessage(Chestlocksystem.getPrefix + "§cDu bist nicht der Owner dieses " + block.getType() + "!");
+                                p.sendMessage(MessageCollection.getNotOwner(p.getName(), block.getType().toString()));
                             }
                         }
                     } else if(chestState instanceof Barrel) {
@@ -75,9 +75,9 @@ public class UnlockCommand implements CommandExecutor {
 
                         if(ownerUUID.equals(p.getUniqueId().toString())) {
                             locksConfig.set(path + ".locked", false);
-                            p.sendMessage(Chestlocksystem.getPrefix + "§7Diese " + block.getType() + " wurde §aerfolgreich §7entlocked!");
+                            p.sendMessage(MessageCollection.getUnlockSuccess(p.getName(), block.getType().toString()));
                         } else {
-                            p.sendMessage(Chestlocksystem.getPrefix + "§cDu bist nicht der Owner dieses " + block.getType() + "!");
+                            p.sendMessage(MessageCollection.getNotOwner(p.getName(), block.getType().toString()));
                         }
                     }
 

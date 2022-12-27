@@ -4,9 +4,6 @@ import de.zblubba.chestlocksystem.Chestlocksystem;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.InvalidConfigurationException;
-
-import java.io.IOException;
 
 public class ReloadCommand implements CommandExecutor  {
 

@@ -1,0 +1,58 @@
+#
+# PLUGIN CODED BY ZBLUBBA | WEBSITE: https://zblubba.de
+# ________  ________  ___       ___  ___  ________  ________  ________      ________  _______
+#|\_____  \|\   __  \|\  \     |\  \|\  \|\   __  \|\   __  \|\   __  \    |\   ___ \|\  ___ \
+# \|___/  /\ \  \|\ /\ \  \    \ \  \\\  \ \  \|\ /\ \  \|\ /\ \  \|\  \   \ \  \_|\ \ \   __/|
+#     /  / /\ \   __  \ \  \    \ \  \\\  \ \   __  \ \   __  \ \   __  \   \ \  \ \\ \ \  \_|/__
+#    /  /_/__\ \  \|\  \ \  \____\ \  \\\  \ \  \|\  \ \  \|\  \ \  \ \  \ __\ \  \_\\ \ \  \_|\ \
+#   |\________\ \_______\ \_______\ \_______\ \_______\ \_______\ \__\ \__\\__\ \_______\ \_______\
+#    \|_______|\|_______|\|_______|\|_______|\|_______|\|_______|\|__|\|__\|__|\|_______|\|_______|
+#
+# In this messages-config you can change all message of this plugin.
+# For the color codes, you can visit my website https://zblubba.de/colors
+# The following symbols are usable:
+# %prefix% - the prefix; %n% - new line; %player% - playername;
+# %target% - given playername in the arguments of the command;
+# %block% - blocktype
+#
+
+prefix: '&cLockSystem &8| &7'
+unknown_player: '%prefix% &cunknown player!'
+
+locked_blocks:
+  - CHEST
+  - BARREL
+  - FURNACE
+
+security:
+  explosion:
+    avoid_explosion_near_lock: true
+    send_message_to_owner: true
+    message: '%prefix% The was an &cexplosion &7near a locked &a%block%&7!'
+  hoppers:
+    disable_item_transfer_through_locked: true
+    send_message_to_owner: true
+    message: '%prefix% &cSomeone trys to get your items of your %block% trough a hopper!'
+
+messages:
+  already_locked: '%prefix% This %block% is already &clocked&7!'
+  not_owner: '%prefix% &cYou are not the owner of this %block%!'
+  locked: '%prefix% &cThis %block% is locked!'
+  look_at_lockable_block: '%prefix% &cPlease look at a lockable block!'
+
+  lock:
+    success: '%prefix% This %block% was &asuccessfully &clocked&7!'
+    player_added: '%prefix% The player &a%target% %7was &asuccessfully &cadded &7to the %block%!'
+    player_removed: '%prefix% The player &a%target% %7was &asuccessfully &cremoved &7to the %block%!'
+
+  unlock:
+    success: '%prefix% This %block% was &asuccessfully &cunlocked&7!'
+
+commands:
+  # here at autolock, you can use the additional %state% phrase.
+  # It tells if the mode is on or off
+  autolock:
+    state: '%prefix% Your &cautolock &7is toggled &c%state%'
+    toggle: '%prefix% Autolock toggled to &a%state%'
+    on_color: '&a'
+    off_color: '&c'

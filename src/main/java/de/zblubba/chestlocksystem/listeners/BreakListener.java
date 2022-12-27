@@ -1,12 +1,14 @@
 package de.zblubba.chestlocksystem.listeners;
 
 import de.zblubba.chestlocksystem.Chestlocksystem;
+import de.zblubba.chestlocksystem.util.MessageCollection;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 
 public class BreakListener implements Listener {
 
@@ -24,6 +26,16 @@ public class BreakListener implements Listener {
             if(isLocked) {
                 p.sendMessage(Chestlocksystem.getPrefix + "§cDiese " + block.getType() + " ist gelockt!");
                 event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent event) {
+        Player p = event.getPlayer();
+        if(MessageCollection.getBlockList().contains(event.getBlock().toString())) {
+            if(locksConfig.getBoolean("players." + p.getUniqueId() + ".autolock")) {
+                p.performCommand("lock");
             }
         }
     }

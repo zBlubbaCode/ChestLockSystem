@@ -1,6 +1,7 @@
 package de.zblubba.chestlocksystem.commands;
 
 import de.zblubba.chestlocksystem.Chestlocksystem;
+import de.zblubba.chestlocksystem.util.MessageCollection;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -51,33 +52,33 @@ public class LockCommand implements CommandExecutor {
                                 String leftPath = "chest." + (int)leftSide.getX() + "_" + (int)leftSide.getY() + "_" + (int)leftSide.getZ();
                                 String rightPath = "chest." + (int)rightSide.getX() + "_" + (int)rightSide.getY() + "_" + (int)rightSide.getZ();
 
-                                locksConfig.set(leftPath + ".owner", p.getUniqueId().toString()); //log in lockedChests.yml
+                                locksConfig.set(leftPath + ".owner", p.getUniqueId().toString()); //log in lockedBlocks.yml
                                 locksConfig.set(leftPath + ".locked", true);
-                                locksConfig.set(leftPath + ".team." + p.getUniqueId(), true); // log into lockedChests.yml
-                                locksConfig.set(rightPath + ".owner", p.getUniqueId().toString()); //log in lockedChests.yml
+                                locksConfig.set(leftPath + ".team." + p.getUniqueId(), true); // log into lockedBlocks.yml
+                                locksConfig.set(rightPath + ".owner", p.getUniqueId().toString()); //log in lockedBlocks.yml
                                 locksConfig.set(rightPath + ".locked", true);
-                                locksConfig.set(rightPath + ".team." + p.getUniqueId(), true); // log into lockedChests.yml
+                                locksConfig.set(rightPath + ".team." + p.getUniqueId(), true); // log into lockedBlocks.yml
 
-                                p.sendMessage(Chestlocksystem.getPrefix + "§7Diese §aDoppelchest §7wurde §aerfolgreich gelockt!");
+                                p.sendMessage(MessageCollection.getLockSuccess(p.getName(), block.getType().toString()));
                             } else {
-                                locksConfig.set(path + ".owner", p.getUniqueId().toString()); //log in lockedChests.yml
+                                locksConfig.set(path + ".owner", p.getUniqueId().toString()); //log in lockedBlocks.yml
                                 locksConfig.set(path + ".locked", true);
-                                locksConfig.set(path + ".team." + p.getUniqueId(), true); // log into lockedChests.yml
-                                p.sendMessage(Chestlocksystem.getPrefix + "§7Diese " + block.getType() + " wurde §aerfolgreich gelockt!");
+                                locksConfig.set(path + ".team." + p.getUniqueId(), true); // log into lockedBlocks.yml
+                                p.sendMessage(MessageCollection.getLockSuccess(p.getName(), block.getType().toString()));
                             }
                         } else if(chestState instanceof Barrel) {
-                            locksConfig.set(path + ".owner", p.getUniqueId().toString()); //log in lockedChests.yml
+                            locksConfig.set(path + ".owner", p.getUniqueId().toString()); //log in lockedBlocks.yml
                             locksConfig.set(path + ".locked", true);
-                            locksConfig.set(path + ".team." + p.getUniqueId(), true); // log into lockedChests.yml
-                            p.sendMessage(Chestlocksystem.getPrefix + "§7Diese " + block.getType() + " wurde §aerfolgreich gelockt!");
+                            locksConfig.set(path + ".team." + p.getUniqueId(), true); // log into lockedBlocks.yml
+                            p.sendMessage(MessageCollection.getLockSuccess(p.getName(), block.getType().toString()));
                         }
 
                     } else {
                         if(locksConfig.getBoolean(path + ".locked")) {
-                            p.sendMessage(Chestlocksystem.getPrefix + "§cDiese " + block.getType() + " ist bereits gelockt!");
+                            p.sendMessage(MessageCollection.getAlreadyLocked(p.getName(), block.getType().toString()));
                         } else {
                             locksConfig.set(path + ".locked", true);
-                            p.sendMessage(Chestlocksystem.getPrefix + "§7Diese " + block.getType() + " wurde §aerfolgreich §7erneut §agelockt!");
+                            p.sendMessage(MessageCollection.getLockSuccess(p.getName(), block.getType().toString()));
                         }
                     }
                 } else {
@@ -97,7 +98,7 @@ public class LockCommand implements CommandExecutor {
                                 targetUUID = player.getUniqueId();
                                 targetName = player.getName();
                             }
-                            if(targetUUID == null) p.sendMessage(Chestlocksystem.getPrefix + "§cungültiger Spieler!");
+                            if(targetUUID == null) p.sendMessage(MessageCollection.getUnkownplayer(p.getName(), args[1]));
 
 
                             BlockState chestState = block.getState();
@@ -107,13 +108,13 @@ public class LockCommand implements CommandExecutor {
                                 if(holder instanceof DoubleChest) {
                                     addTeamToDoubleChest(block, p, true, targetUUID, targetName);
                                 } else {
-                                    locksConfig.set(path + ".team." + targetUUID, true); // log into lockedChests.yml
-                                    p.sendMessage(Chestlocksystem.getPrefix + "§7Der Spieler §a" + targetName + " §7wurde §aerfolgreich §7zur " + block.getType() + " §chinzugefügt!"); //done message
+                                    locksConfig.set(path + ".team." + targetUUID, true); // log into lockedBlocks.yml
+                                    p.sendMessage(MessageCollection.getLockPlayerAdded(p.getName(), block.getType().toString(), targetName));
                                     //instead of add remove
                                 }
                             } else if(chestState instanceof Barrel) {
-                                locksConfig.set(path + ".team." + targetUUID, true); // log into lockedChests.yml
-                                p.sendMessage(Chestlocksystem.getPrefix + "§7Der Spieler §a" + targetName + " §7wurde §aerfolgreich §7zur " + block.getType() + " §chinzugefügt!"); //done message
+                                locksConfig.set(path + ".team." + targetUUID, true); // log into lockedBlocks.yml
+                                p.sendMessage(MessageCollection.getLockPlayerAdded(p.getName(), block.getType().toString(), targetName));
                             }
 
                         } else if(args[0].equalsIgnoreCase("remove") && Objects.equals(locksConfig.get(path + ".owner"), p.getUniqueId().toString())) {
@@ -129,7 +130,7 @@ public class LockCommand implements CommandExecutor {
                                 targetUUID = player.getUniqueId();
                                 targetName = player.getName();
                             }
-                            if(targetUUID == null) p.sendMessage(Chestlocksystem.getPrefix + "§cungültiger Spieler!");
+                            if(targetUUID == null) p.sendMessage(MessageCollection.getUnkownplayer(p.getName(), args[1]));
                             BlockState chestState = block.getState();
                             if(chestState instanceof Chest) {
                                 Chest chest = (Chest) chestState;
@@ -137,22 +138,22 @@ public class LockCommand implements CommandExecutor {
                                 if(holder instanceof DoubleChest) {
                                     addTeamToDoubleChest(block, p, false, targetUUID, targetName);
                                 } else {
-                                    locksConfig.set(path + ".team." + targetUUID, false); // log into lockedChests.yml
-                                    p.sendMessage(Chestlocksystem.getPrefix + "§7Der Spieler §a" + targetName + " §7wurde §aerfolgreich §7zur " + block.getType() + " §chinzugefügt!"); //done message
+                                    locksConfig.set(path + ".team." + targetUUID, false); // log into lockedBlocks.yml
+                                    p.sendMessage(MessageCollection.getLockPlayerRemoved(p.getName(), block.getType().toString(), targetName));
                                     //instead of add remove
                                 }
                             } else if(chestState instanceof Barrel) {
-                                locksConfig.set(path + ".team." + targetUUID, false); // log into lockedChests.yml
-                                p.sendMessage(Chestlocksystem.getPrefix + "§7Der Spieler §a" + targetName + " §7wurde §aerfolgreich §7zur " + block.getType() + " §chinzugefügt!"); //done message
+                                locksConfig.set(path + ".team." + targetUUID, false); // log into lockedBlocks.yml
+                                p.sendMessage(MessageCollection.getLockPlayerRemoved(p.getName(), block.getType().toString(), targetName));
                             }
 
                         } else { //if not owner or alias wrong
-                            p.sendMessage(Chestlocksystem.getPrefix + "§cNutze /lock <add | remove>, oder du bist nicht der Owner dieser " + block.getType() + "!");
+                            p.sendMessage(Chestlocksystem.getPrefix + "§cUse /lock <add | remove>, or you are not the owner!");
                         }
                     }
                 }
             } else {
-                p.sendMessage(Chestlocksystem.getPrefix + "§cBitte schau eine Kiste oder Barrel an!");
+                p.sendMessage(MessageCollection.lookAtLockableBlock(p.getName(), block.getType().toString()));
             }
 
         }
@@ -186,8 +187,8 @@ public class LockCommand implements CommandExecutor {
                     String leftPath = "chest." + (int)leftSide.getX() + "_" + (int)leftSide.getY() + "_" + (int)leftSide.getZ();
                     String rightPath = "chest." + (int)rightSide.getX() + "_" + (int)rightSide.getY() + "_" + (int)rightSide.getZ();
 
-                    locksConfig.set(rightPath + ".team." + targetUUID, state); // log into lockedChests.yml
-                    locksConfig.set(leftPath + ".team." + targetUUID, state); // log into lockedChests.yml
+                    locksConfig.set(rightPath + ".team." + targetUUID, state); // log into lockedBlocks.yml
+                    locksConfig.set(leftPath + ".team." + targetUUID, state); // log into lockedBlocks.yml
 
                     if(state) { p.sendMessage(Chestlocksystem.getPrefix + "§7Der Spieler §a" + targetName + " §7wurde §aerfolgreich §7zur §aDoppelchest §chinzugefügt!"); //done message
                     } else {p.sendMessage(Chestlocksystem.getPrefix + "§7Der Spieler §a" + targetName + " §7wurde §aerfolgreich §7von der §aDoppelchest §centfernt!");} //done message

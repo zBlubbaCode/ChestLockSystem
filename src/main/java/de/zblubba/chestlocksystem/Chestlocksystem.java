@@ -6,6 +6,7 @@ import de.zblubba.chestlocksystem.commands.UnlockCommand;
 import de.zblubba.chestlocksystem.listeners.AvoidLockedExplosion;
 import de.zblubba.chestlocksystem.listeners.BreakListener;
 import de.zblubba.chestlocksystem.listeners.InteractionListener;
+import de.zblubba.chestlocksystem.util.MessageCollection;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -19,16 +20,18 @@ import java.io.IOException;
 public final class Chestlocksystem extends JavaPlugin {
     public static Chestlocksystem instance;
 
-    public static String getPrefix = "§eTerribian §8| §7";
+    public static String getPrefix = MessageCollection.getPrefix();
 
-    public static File locksFile = new File("plugins/chestlocksystem", "lockedChests.yml");
+    public static File locksFile = new File("plugins/chestlocksystem", "lockedBlocks.yml");
     public static FileConfiguration locksConfig = new YamlConfiguration().loadConfiguration(locksFile);
+    public static File configFile = new File("plugins/chestlocksystem", "config.yml");
+    public static FileConfiguration config = new YamlConfiguration().loadConfiguration(configFile);
 
     @Override
     public void onEnable() {
         instance = this;
 
-        Bukkit.getConsoleSender().sendMessage("ChestLockSystem §aaktiviert");
+        Bukkit.getConsoleSender().sendMessage("ChestLockSystem §aactivated");
 
         createFiles();
         loadConfigFiles();
@@ -39,7 +42,7 @@ public final class Chestlocksystem extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        Bukkit.getConsoleSender().sendMessage("ChestLockSystem §cdeaktiviert");
+        Bukkit.getConsoleSender().sendMessage("ChestLockSystem §cdeactivated");
     }
 
     public void registerCommands() {
@@ -56,10 +59,16 @@ public final class Chestlocksystem extends JavaPlugin {
     }
 
     public static void createFiles() {
-        if(!Chestlocksystem.locksFile.exists()) {
+        if(!Chestlocksystem.locksFile.exists() || !Chestlocksystem.configFile.exists()) {
             Chestlocksystem.getInstance().getLogger().info("One or more files were not found. Creating...");
-            Chestlocksystem.locksFile.getParentFile().mkdirs();
-            Chestlocksystem.getInstance().saveResource("lockedChests.yml", false);
+            if(!Chestlocksystem.locksFile.exists()) {
+                Chestlocksystem.locksFile.getParentFile().mkdirs();
+                Chestlocksystem.getInstance().saveResource("lockedBlocks.yml", false);
+            }
+            if(!Chestlocksystem.configFile.exists()) {
+                Chestlocksystem.configFile.getParentFile().mkdirs();
+                Chestlocksystem.getInstance().saveResource("config.yml", false);
+            }
         }
     }
 
@@ -67,7 +76,7 @@ public final class Chestlocksystem extends JavaPlugin {
         Chestlocksystem.getInstance().getLogger().info("Loading config files...");
         try {
             Chestlocksystem.locksConfig.load(locksFile);
-
+            Chestlocksystem.config.load(configFile);
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         } catch (InvalidConfigurationException exception) {
@@ -79,3 +88,10 @@ public final class Chestlocksystem extends JavaPlugin {
         return instance;
     }
 }
+
+
+// TODO: Add infinite lockable blocks
+// TODO: Add all inventories of lockable blocks to interactionListener
+// TODO: IN PROGRESS - Add Command to autolock on place
+// TODO: Add command to auto-add default team
+// TODO: Add Command to modify default team of player
