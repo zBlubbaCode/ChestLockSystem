@@ -24,7 +24,7 @@ public class BreakListener implements Listener {
 
         if(locksConfig.contains(path)) {
             if(isLocked) {
-                p.sendMessage(Chestlocksystem.getPrefix + "§cDiese " + block.getType() + " ist gelockt!");
+                p.sendMessage(MessageCollection.getBlockLocked(p.getName(), block.getType().toString()));
                 event.setCancelled(true);
             }
         }
@@ -33,7 +33,7 @@ public class BreakListener implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         Player p = event.getPlayer();
-        if(MessageCollection.getBlockList().contains(event.getBlock().toString())) {
+        if(MessageCollection.getBlockList().contains(event.getBlock().getType().toString())) {
             if(locksConfig.getBoolean("players." + p.getUniqueId() + ".autolock")) {
                 p.performCommand("lock");
             }

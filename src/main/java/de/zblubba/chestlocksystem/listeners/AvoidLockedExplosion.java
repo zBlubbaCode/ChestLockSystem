@@ -1,6 +1,7 @@
 package de.zblubba.chestlocksystem.listeners;
 
 import de.zblubba.chestlocksystem.Chestlocksystem;
+import de.zblubba.chestlocksystem.util.MessageCollection;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -22,7 +23,7 @@ public class AvoidLockedExplosion implements Listener {
         for(Block block : event.blockList()) {
             if(block.getType() == Material.CHEST || block.getType() == Material.BARREL) {
                 event.setCancelled(true);
-                Bukkit.broadcastMessage(Chestlocksystem.getPrefix + "In der Nähe einer §cgelockten " + block.getType().toString().toLowerCase() + "§7ist ein Entity §cexplodiert§7!");
+                Bukkit.broadcastMessage(MessageCollection.getExplosionMessage(block.getType().toString()));
             }
         }
     }
@@ -44,6 +45,7 @@ public class AvoidLockedExplosion implements Listener {
             if(locksConfig.getBoolean(path + ".locked")) {
                 event.setCancelled(true);
                 Bukkit.broadcastMessage(Chestlocksystem.getPrefix + "Es versucht gerade jemand §c mit einem " + destination.getType() + " Sachen aus einer gelockten " + blockType + " zu nehmen");
+                Bukkit.broadcastMessage(MessageCollection.getHopperMoveMessage(block.getBlock().getType().toString()));
             }
         }
     }

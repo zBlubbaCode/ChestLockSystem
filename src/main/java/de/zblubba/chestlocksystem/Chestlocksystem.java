@@ -1,5 +1,6 @@
 package de.zblubba.chestlocksystem;
 
+import de.zblubba.chestlocksystem.commands.AutoLockCommand;
 import de.zblubba.chestlocksystem.commands.LockCommand;
 import de.zblubba.chestlocksystem.commands.ReloadCommand;
 import de.zblubba.chestlocksystem.commands.UnlockCommand;
@@ -19,8 +20,6 @@ import java.io.IOException;
 
 public final class Chestlocksystem extends JavaPlugin {
     public static Chestlocksystem instance;
-
-    public static String getPrefix = MessageCollection.getPrefix();
 
     public static File locksFile = new File("plugins/chestlocksystem", "lockedBlocks.yml");
     public static FileConfiguration locksConfig = new YamlConfiguration().loadConfiguration(locksFile);
@@ -49,6 +48,7 @@ public final class Chestlocksystem extends JavaPlugin {
         getCommand("lock").setExecutor(new LockCommand());
         getCommand("unlock").setExecutor(new UnlockCommand());
         getCommand("reloadchestlocksystem").setExecutor(new ReloadCommand());
+        getCommand("autolock").setExecutor(new AutoLockCommand());
     }
 
     public void registerListeners() {
@@ -82,6 +82,16 @@ public final class Chestlocksystem extends JavaPlugin {
         } catch (InvalidConfigurationException exception) {
             throw new RuntimeException(exception);
         }
+    }
+
+    public static String getPrefix = getPrefix();
+
+    public static String getPrefix() {
+        String prefix = Chestlocksystem.config.getString("prefix");
+        if(prefix != null) {
+            prefix = prefix.replace("&", "§");
+        } else prefix = "§cERROR §8|";
+        return prefix;
     }
 
     public static Chestlocksystem getInstance() {

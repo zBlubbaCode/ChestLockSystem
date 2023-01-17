@@ -13,3 +13,5 @@ commands:
     description: unlocks a chest
   reloadchestlocksystem:
     description: reloads this plugin
+  autolock:
+    description: automatically locks a chest on place

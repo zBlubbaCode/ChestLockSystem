@@ -12,11 +12,6 @@ public class MessageCollection {
     public static Configuration config = Chestlocksystem.config;
 
     // ------------------------------------------------------------------------
-    public static String getPrefix() {
-        String prefix = config.getString("prefix");
-        prefix = replaceWithVariables(prefix, null, null, null);
-        return prefix;
-    }
 
     //locked blocklist
     public static ArrayList<String> getBlockList() {

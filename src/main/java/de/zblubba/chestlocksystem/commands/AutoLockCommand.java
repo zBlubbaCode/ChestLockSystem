@@ -8,6 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 
+import java.io.IOException;
+
 public class AutoLockCommand implements CommandExecutor {
 
     Configuration config = Chestlocksystem.locksConfig;
@@ -34,6 +36,12 @@ public class AutoLockCommand implements CommandExecutor {
 
                 } else {
                     p.sendMessage("§cAlias: /autolock <toggle | on | off>");
+                }
+
+                try {
+                    Chestlocksystem.locksConfig.save(Chestlocksystem.locksFile);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
             }
         }

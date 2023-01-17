@@ -1,6 +1,7 @@
 package de.zblubba.chestlocksystem.listeners;
 
 import de.zblubba.chestlocksystem.Chestlocksystem;
+import de.zblubba.chestlocksystem.util.MessageCollection;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -23,14 +24,13 @@ public class InteractionListener implements Listener {
                 block = event.getInventory().getLocation().getBlock();
             } else return;
 
-
             String path = "chest." + block.getX() + "_" + block.getY() + "_" + block.getZ();
 
             final boolean isInTeam = locksConfig.getBoolean(path + ".team." + p.getUniqueId());
 
             if(locksConfig.contains(path) && !p.hasPermission("locksystem.admin")) {
                 if(!isInTeam && locksConfig.getBoolean(path + ".locked")) {
-                    p.sendMessage(Chestlocksystem.getPrefix + "§cDiese " + block.getType() + " ist gelockt!");
+                    p.sendMessage(MessageCollection.getBlockLocked(p.getName(), block.getType().toString()));
                     event.setCancelled(true);
                 }
             }
